@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Studio Forum Editor</title>
+    <link rel="stylesheet" href="assets/app.css" />
+  </head>
+  <body>
+    <main class="editor-shell">
+      <div class="viewer-header">
+        <div>
+          <p class="eyebrow">Design Story Builder</p>
+          <h1>Build your presentation flow</h1>
+        </div>
+        <div class="actions">
+          <a class="btn" href="index.html">Home</a>
+          <a class="btn" href="viewer.html?preview=1">Preview</a>
+          <button class="btn" id="loadJson">Load JSON</button>
+          <button class="btn" id="exportJson">Export JSON</button>
+          <button class="btn primary" id="clearDraft">New project</button>
+        </div>
+      </div>
+
+      <section class="editor-layout">
+        <aside class="panel-list">
+          <h2>Scenes</h2>
+          <div id="sceneList"></div>
+          <div class="step-actions">
+            <button class="btn primary" id="addScene">Add scene</button>
+            <button class="btn" id="removeScene">Remove</button>
+            <button class="btn" id="moveSceneUp">Move up</button>
+            <button class="btn" id="moveSceneDown">Move down</button>
+          </div>
+        </aside>
+
+        <section class="form">
+          <label>
+            Presentation title
+            <input id="projectTitle" placeholder="Q2 Product Marketing Site" />
+          </label>
+          <label>
+            Audience context
+            <textarea id="projectSubtitle" placeholder="What this review should solve"></textarea>
+          </label>
+
+          <hr />
+
+          <label>
+            Scene title
+            <input id="sceneTitle" placeholder="Homepage hero direction" />
+          </label>
+          <label>
+            Story narrative
+            <textarea id="sceneNarrative" placeholder="Set the scene and explain what changed."></textarea>
+          </label>
+          <label>
+            Decision and rationale
+            <textarea id="sceneRationale" placeholder="Why this direction was chosen and what tradeoffs were made."></textarea>
+          </label>
+          <label>
+            Scene image
+            <input type="file" id="sceneImage" accept="image/*" />
+          </label>
+
+          <div class="step-actions">
+            <button class="btn" id="placeHotspot">Place hotspot</button>
+            <button class="btn" id="clearHotspots">Clear hotspots</button>
+          </div>
+
+          <div class="preview">
+            <strong>Scene canvas</strong>
+            <div id="imageStage" class="image-stage image-stage-editor"></div>
+            <p id="placementHint" class="lede compact"></p>
+          </div>
+
+          <div class="hotspot-editor">
+            <div class="hotspot-header">
+              <strong>Hotspots</strong>
+              <span id="hotspotCount" class="lede compact"></span>
+            </div>
+            <div id="hotspotList"></div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <input type="file" id="jsonFile" accept="application/json" hidden />
+    <script src="assets/editor.js"></script>
+  </body>
+</html>

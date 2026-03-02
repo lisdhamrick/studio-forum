@@ -1,0 +1,48 @@
+{
+  "title": "Spring Campaign Landing Page",
+  "subtitle": "Client review walkthrough focused on hierarchy, conversion cues, and brand consistency.",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "title": "Hero composition and focal hierarchy",
+      "narrative": "We tested three hero structures and selected this one because the message, product visual, and CTA read left-to-right without eye-jumps.",
+      "rationale": "This layout improved first-click confidence in internal testing. The diagonal crop drives attention into the CTA instead of away from it.",
+      "imageDataUrl": "",
+      "hotspots": [
+        {
+          "id": "s1-h1",
+          "title": "Primary CTA contrast",
+          "note": "Button tint moved from flat yellow to deep gold for better accessibility against the hero gradient.",
+          "x": 68,
+          "y": 60,
+          "flowOrder": 1
+        },
+        {
+          "id": "s1-h2",
+          "title": "Headline rhythm",
+          "note": "Line break after the second word improves scan speed while keeping the brand phrase intact.",
+          "x": 24,
+          "y": 34,
+          "flowOrder": 2
+        }
+      ]
+    },
+    {
+      "id": "scene-2",
+      "title": "Feature strip and icon language",
+      "narrative": "This section now reads as a clear progression of value, instead of a dense list.",
+      "rationale": "We aligned icon stroke weight with the wordmark thickness and introduced larger spacing intervals to reduce noise.",
+      "imageDataUrl": "",
+      "hotspots": [
+        {
+          "id": "s2-h1",
+          "title": "Icon simplification",
+          "note": "Removed inner shadow and reduced detail to preserve legibility on smaller viewports.",
+          "x": 32,
+          "y": 47,
+          "flowOrder": 1
+        }
+      ]
+    }
+  ]
+}
