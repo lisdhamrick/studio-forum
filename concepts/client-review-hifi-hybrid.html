@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Studio Forum Hi-Fi - Hybrid</title>
+  <style>
+    :root {
+      --bg: #000;
+      --text: #f4f7ff;
+      --muted: #9ea9bb;
+      --line: rgba(255,255,255,.18);
+      --gold: #efbf64;
+      --cyan: #70d3d8;
+      --blue: #84baff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Satoshi", "Manrope", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 620px at 50% 0%, rgba(43,69,118,.32), transparent 66%),
+        radial-gradient(1000px 700px at 100% -12%, rgba(18,64,74,.28), transparent 66%),
+        #000;
+    }
+    .shell { max-width: 1280px; margin: 0 auto; padding: 26px 24px 120px; }
+    .top {
+      position: sticky; top: 10px; z-index: 20;
+      display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid var(--line); border-radius: 14px;
+      background: rgba(6,8,13,.78); backdrop-filter: blur(10px);
+      padding: 10px 14px; margin-bottom: 44px;
+    }
+    .brand { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+    .status { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+    .hero { text-align: center; margin: 14vh auto 8vh; }
+    h1 { margin: 0; font-size: clamp(38px, 6vw, 84px); line-height: .96; letter-spacing: -.03em; }
+    .lede { margin: 14px auto 0; max-width: 62ch; color: var(--muted); font-size: 18px; }
+    .frame {
+      border: 1px solid var(--line); border-radius: 22px;
+      background: linear-gradient(160deg, #0f1726 0%, #141d2b 58%, #101924 100%);
+      min-height: 720px; position: relative; overflow: hidden;
+      box-shadow: 0 28px 72px rgba(0,0,0,.58);
+    }
+    .art { position: absolute; inset: 8% 9% 12%; border-radius: 18px; background: linear-gradient(132deg, #3b5884, #2d435f 58%, #355c5f); }
+    .art::after { content:""; position:absolute; inset:0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+    .beam { position:absolute; inset:-24% -18% auto; height:460px; background: radial-gradient(ellipse at 50% 50%, rgba(132,186,255,.24), transparent 72%); pointer-events:none; }
+    .vignette { position:absolute; inset:0; background: radial-gradient(circle at 50% 46%, transparent 34%, rgba(0,0,0,.58)); }
+    .hotspot {
+      position:absolute; width:28px; height:28px; border-radius:999px;
+      display:grid; place-items:center; border:1px solid rgba(255,255,255,.86);
+      font-size:11px; font-weight:700; color:#fff;
+      background: rgba(132,186,255,.24); box-shadow: 0 0 0 9px rgba(132,186,255,.08);
+      animation: pulse 2.3s ease-in-out infinite;
+    }
+    .h1 { left: 24%; top: 44%; }
+    .h2 { left: 54%; top: 31%; animation-delay: .65s; }
+    .h3 { left: 72%; top: 67%; animation-delay: 1.2s; }
+    .panel {
+      position:absolute; right: 14px; top: 14px; width: min(38%, 360px);
+      display:grid; gap: 8px;
+    }
+    .note { border:1px solid var(--line); border-radius:12px; padding:11px; background: rgba(0,0,0,.52); }
+    .note strong { display:block; font-size:13px; color: var(--cyan); margin-bottom: 4px; }
+    .note p { margin:0; font-size:13px; color: var(--muted); line-height:1.43; }
+    .note.active { border-color: rgba(239,191,100,.62); background: linear-gradient(180deg, rgba(239,191,100,.14), rgba(239,191,100,.03)); }
+    .dock {
+      position:absolute; left: 14px; right: 14px; bottom: 14px;
+      border:1px solid var(--line); border-radius: 12px; padding: 10px;
+      background: rgba(0,0,0,.48);
+      display:flex; justify-content: space-between; gap: 10px; align-items: center;
+    }
+    .dock span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .progress { display:grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 48%; }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:7px; text-align:center; font-size:11px; color: var(--muted); }
+    .chip.active { border-color: rgba(239,191,100,.63); color: var(--text); }
+    .sections { margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .section { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: rgba(255,255,255,.03); }
+    .section h3 { margin: 0 0 7px; font-size: 16px; letter-spacing: -.01em; }
+    .section p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); box-shadow: 0 0 0 9px rgba(132,186,255,.08); }
+      50% { transform: scale(1.09); box-shadow: 0 0 0 13px rgba(132,186,255,.05); }
+    }
+    @media (max-width: 1050px) {
+      .frame { min-height: 680px; }
+      .panel { position: static; width: auto; margin: 14px; }
+      .dock { position: static; margin: 14px; flex-direction: column; align-items: stretch; }
+      .progress { width: 100%; }
+      .sections { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top"><div class="brand">Studio Forum · Hi-Fi Hybrid</div><div class="status">Client Review Mode · Scene 1/4</div></header>
+    <section class="hero">
+      <h1>Center-stage focus. Guided feature clarity.</h1>
+      <p class="lede">Hybrid combines Spotlight's immersive scale with Noir's structured review cues so non-design clients can follow the narrative confidently.</p>
+    </section>
+    <article class="frame">
+      <div class="beam"></div><div class="art"></div><div class="vignette"></div>
+      <div class="hotspot h1">1</div><div class="hotspot h2">2</div><div class="hotspot h3">3</div>
+      <aside class="panel">
+        <div class="note active"><strong>1 · Story entry</strong><p>First frame orients the client with context before any detailed critique.</p></div>
+        <div class="note"><strong>2 · Design rationale</strong><p>Decision notes are visible next to the work, not hidden in controls.</p></div>
+        <div class="note"><strong>3 · Recommendation</strong><p>Flow ends with explicit "why this direction" for async approvals.</p></div>
+      </aside>
+      <div class="dock">
+        <span>Detail 1 / 3</span>
+        <div class="progress"><div class="chip active">Context</div><div class="chip active">Direction</div><div class="chip">Options</div><div class="chip">Decision</div></div>
+      </div>
+    </article>
+    <section class="sections">
+      <div class="section"><h3>Motion Language</h3><p>Subtle pulse and reveal animations keep attention moving without adding distraction.</p></div>
+      <div class="section"><h3>Audience Clarity</h3><p>Always-visible cues tell stakeholders where they are in the story and why it matters.</p></div>
+      <div class="section"><h3>Presenter Intent</h3><p>Structure mirrors live pitch flow while still working as a standalone async destination.</p></div>
+    </section>
+  </div>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</body>
+</html>

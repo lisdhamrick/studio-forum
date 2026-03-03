@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Studio Forum Concept - Client Review Experience</title>
+  <style>
+    :root {
+      --bg: #0c1117;
+      --bg-2: #111826;
+      --panel: rgba(255, 255, 255, 0.05);
+      --line: rgba(255, 255, 255, 0.14);
+      --text: #f4f7fb;
+      --muted: #aeb8c8;
+      --gold: #f4c95d;
+      --teal: #64d7d0;
+      --blue: #7cb8ff;
+      --glow: 0 28px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Avenir Next", "Satoshi", "Manrope", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(1200px 800px at 10% -10%, #1e2b46 0%, transparent 56%),
+        radial-gradient(1000px 700px at 100% 0%, #18383f 0%, transparent 56%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    .shell { max-width: 1220px; margin: 0 auto; padding: 28px 24px 120px; }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 60px;
+      position: sticky;
+      top: 14px;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(11, 15, 24, 0.7);
+    }
+
+    .brand { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; color: var(--gold); }
+    .progress { color: var(--muted); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .hero {
+      min-height: 76vh;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 80px;
+    }
+
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      max-width: 14ch;
+    }
+
+    .hero p { margin: 0; color: var(--muted); max-width: 48ch; font-size: 18px; }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 16px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #0d1118;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--gold), #ffe8a9);
+      border-radius: 999px;
+      padding: 7px 11px;
+    }
+
+    .hero-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      box-shadow: var(--glow);
+      padding: 18px;
+      transform: translateY(0);
+      animation: drift 5s ease-in-out infinite;
+    }
+
+    .hero-art {
+      border-radius: 12px;
+      background: conic-gradient(from 130deg at 65% 44%, #3f5ea8, #1d4855, #845425, #3f5ea8);
+      aspect-ratio: 1.15 / 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-art::before,
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(3px);
+    }
+
+    .hero-art::before {
+      width: 210px;
+      height: 210px;
+      right: -36px;
+      top: -40px;
+      background: rgba(255, 255, 255, 0.23);
+    }
+
+    .hero-art::after {
+      width: 280px;
+      height: 280px;
+      left: -80px;
+      bottom: -110px;
+      background: rgba(0, 0, 0, 0.32);
+    }
+
+    .section {
+      margin: 0 auto 74px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .section-meta {
+      position: sticky;
+      top: 86px;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .section-meta h2 { margin: 0 0 8px; font-size: clamp(22px, 2vw, 28px); letter-spacing: -0.01em; }
+    .section-meta p { margin: 0; color: var(--muted); }
+
+    .stage {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #0b0f17;
+      min-height: 500px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--glow);
+    }
+
+    .mock-image {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #1d2738 0%, #202734 52%, #17232f 100%);
+    }
+
+    .mock-image::before {
+      content: "";
+      position: absolute;
+      inset: 9% 11% 14% 8%;
+      border-radius: 14px;
+      background: linear-gradient(130deg, #344c71, #23395a 55%, #2f4f4f);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .mock-image::after {
+      content: "";
+      position: absolute;
+      width: 46%;
+      height: 12%;
+      bottom: 11%;
+      left: 11%;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.25);
+      filter: blur(6px);
+    }
+
+    .hotspot {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.75);
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #f9fcff;
+      backdrop-filter: blur(3px);
+      cursor: default;
+      background: rgba(124, 184, 255, 0.23);
+      box-shadow: 0 0 0 6px rgba(124, 184, 255, 0.11);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    .hotspot.one { left: 56%; top: 30%; }
+    .hotspot.two { left: 28%; top: 56%; animation-delay: 0.5s; }
+    .hotspot.three { left: 66%; top: 66%; animation-delay: 1s; }
+
+    .note-rail {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: min(44%, 320px);
+    }
+
+    .note {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(12, 17, 26, 0.82);
+    }
+
+    .note strong { display: block; font-size: 13px; margin-bottom: 4px; color: var(--teal); }
+    .note p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .timeline {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      padding: 10px 8px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .step.active {
+      border-color: rgba(244, 201, 93, 0.55);
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(244, 201, 93, 0.14), rgba(244, 201, 93, 0.02));
+    }
+
+    .footer-note {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 6px rgba(124, 184, 255, 0.11); }
+      50% { transform: scale(1.07); box-shadow: 0 0 0 9px rgba(124, 184, 255, 0.05); }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @media (max-width: 980px) {
+      .hero, .section { grid-template-columns: 1fr; }
+      .section-meta { position: static; }
+      .note-rail { position: static; width: auto; margin: 12px; }
+      .timeline { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">Studio Forum Review</div>
+      <div class="progress">Prepared walkthrough • 01 / 04</div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="badge">Client Review Experience</div>
+        <h1>A guided visual story, not a dashboard.</h1>
+        <p>
+          This direction keeps your client in a focused, cinematic review flow: scroll reveals key decisions,
+          hotspots call out details without visual clutter, and every section is paced to support async understanding.
+        </p>
+      </div>
+      <div class="hero-card">
+        <div class="hero-art"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <aside class="section-meta">
+        <h2>Scene 1: Brand Hero Direction</h2>
+        <p>Big visual. Three intentional callouts. One clear decision narrative.</p>
+      </aside>
+      <article class="stage">
+        <div class="mock-image"></div>
+        <button class="hotspot one">1</button>
+        <button class="hotspot two">2</button>
+        <button class="hotspot three">3</button>
+        <div class="note-rail">
+          <div class="note"><strong>Detail 1 · Typography Rhythm</strong><p>Adjusted hierarchy for cleaner first-scan and stronger emotional tone.</p></div>
+          <div class="note"><strong>Detail 2 · Color Balance</strong><p>Reduced saturation in support graphics to keep attention anchored to message.</p></div>
+          <div class="note"><strong>Detail 3 · CTA Framing</strong><p>Shifted contrast and spacing so the conversion action feels obvious, not loud.</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section">
+      <aside class="section-meta">
+        <h2>Review Flow</h2>
+        <p>The audience always knows where they are in the story and what comes next.</p>
+      </aside>
+      <article>
+        <div class="timeline">
+          <div class="step active">1. Context</div>
+          <div class="step active">2. Direction</div>
+          <div class="step">3. Variants</div>
+          <div class="step">4. Decision</div>
+        </div>
+      </article>
+    </section>
+
+    <p class="footer-note">
+      Concept intent: modern, dynamic, intuitive for non-design stakeholders. This is a visual-first review destination with no editing controls shown to clients.
+    </p>
+  </div>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Studio Forum Hi-Fi - Spotlight</title>
+  <style>
+    :root {
+      --bg: #000;
+      --panel: rgba(255,255,255,.06);
+      --line: rgba(255,255,255,.17);
+      --text: #f5f8ff;
+      --muted: #9da8ba;
+      --gold: #eebd64;
+      --cyan: #72d1da;
+      --blue: #88baff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Satoshi", "Manrope", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 50% 8%, rgba(57,84,138,.35), transparent 64%),
+        radial-gradient(1000px 700px at 90% -12%, rgba(22,66,74,.30), transparent 64%),
+        #000;
+    }
+    .shell { max-width: 1280px; margin: 0 auto; padding: 28px 24px 120px; }
+    .nav {
+      position: sticky; top: 12px; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      border: 1px solid var(--line); border-radius: 14px;
+      background: rgba(5, 8, 13, .78); backdrop-filter: blur(10px);
+      padding: 10px 14px; margin-bottom: 54px;
+    }
+    .brand { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+    .prog { font-size: 12px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+    .hero { min-height: 72vh; display: grid; gap: 18px; align-content: center; justify-items: center; text-align: center; }
+    h1 { margin: 0; font-size: clamp(36px, 5.5vw, 78px); line-height: .98; letter-spacing: -.03em; max-width: 12ch; }
+    .lede { margin: 12px 0 0; max-width: 62ch; color: var(--muted); font-size: 18px; }
+    .spot {
+      margin-top: 34px;
+      width: min(100%, 1160px); min-height: 700px;
+      border: 1px solid var(--line); border-radius: 22px;
+      background: linear-gradient(162deg, #0e1728 0%, #141d2b 58%, #101925 100%);
+      position: relative; overflow: hidden;
+      box-shadow: 0 26px 70px rgba(0,0,0,.58);
+    }
+    .visual { position: absolute; inset: 8% 9% 10%; border-radius: 20px; background: linear-gradient(130deg, #3b5885, #2f4668 58%, #35595b); }
+    .visual::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+    .vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 48%, transparent 34%, rgba(0,0,0,.6)); }
+    .beam { position: absolute; inset: -20% -10% auto; height: 420px; background: radial-gradient(ellipse at 50% 40%, rgba(136,186,255,.22), transparent 72%); pointer-events: none; }
+    .hotspot {
+      position: absolute; width: 28px; height: 28px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.84); display: grid; place-items: center;
+      font-size: 11px; font-weight: 700; color: #fff;
+      background: rgba(136,186,255,.22);
+      box-shadow: 0 0 0 9px rgba(136,186,255,.08);
+      animation: pulse 2.3s ease-in-out infinite;
+    }
+    .h1 { left: 28%; top: 44%; }
+    .h2 { left: 58%; top: 32%; animation-delay: .6s; }
+    .h3 { left: 72%; top: 66%; animation-delay: 1.2s; }
+    .notes {
+      position: absolute; right: 14px; top: 14px; width: min(39%, 340px);
+      display: grid; gap: 8px;
+    }
+    .note { border: 1px solid var(--line); border-radius: 12px; background: rgba(0,0,0,.52); padding: 11px; }
+    .note strong { display: block; color: var(--cyan); font-size: 13px; margin-bottom: 4px; }
+    .note p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+    .note.active { border-color: rgba(238,189,100,.62); background: linear-gradient(180deg, rgba(238,189,100,.14), rgba(238,189,100,.03)); }
+    .timeline { margin: 22px auto 0; width: min(980px, 100%); display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 8px; text-align: center; font-size: 12px; color: var(--muted); }
+    .chip.active { color: var(--text); border-color: rgba(238,189,100,.6); }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); box-shadow: 0 0 0 9px rgba(136,186,255,.08); }
+      50% { transform: scale(1.09); box-shadow: 0 0 0 13px rgba(136,186,255,.05); }
+    }
+    @media (max-width: 980px) {
+      .spot { min-height: 620px; }
+      .notes { position: static; width: auto; margin: 14px; }
+      .timeline { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="nav"><div class="brand">Studio Forum · Hi-Fi Spotlight</div><div class="prog">Prepared Walkthrough · 01/04</div></div>
+    <section class="hero">
+      <h1>Focus the eye. Sequence the story.</h1>
+      <p class="lede">A center-stage review experience for async clients where each pulse marker introduces one intentional decision and its rationale.</p>
+      <article class="spot">
+        <div class="beam"></div><div class="visual"></div><div class="vignette"></div>
+        <div class="hotspot h1">1</div><div class="hotspot h2">2</div><div class="hotspot h3">3</div>
+        <div class="notes">
+          <div class="note active"><strong>1 · Messaging hierarchy</strong><p>Rebalanced headline rhythm to reduce first-scan friction for non-design stakeholders.</p></div>
+          <div class="note"><strong>2 · Brand emphasis</strong><p>Adjusted support graphic saturation so message remains visual anchor.</p></div>
+          <div class="note"><strong>3 · Action path</strong><p>Call-to-action now sits directly in natural scan flow for faster clarity.</p></div>
+        </div>
+      </article>
+      <div class="timeline"><div class="chip active">Context</div><div class="chip active">Direction</div><div class="chip">Alternatives</div><div class="chip">Recommendation</div></div>
+    </section>
+  </div>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</body>
+</html>

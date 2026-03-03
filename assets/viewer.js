@@ -10,7 +10,8 @@ const state = {
   hotspotIndex: 0,
   flowMode: true,
   autoPlay: false,
-  timerId: null
+  timerId: null,
+  observer: null
 };
 
 const getParams = () => new URLSearchParams(window.location.search);
@@ -141,6 +142,20 @@ const escapeHtml = (value) =>
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
 
+const detailCount = (scene) => (scene && Array.isArray(scene.hotspots) ? scene.hotspots.length : 0);
+
+const buildProgressMarkup = () => {
+  const totalScenes = state.project ? state.project.scenes.length : 0;
+  const labels = ["Context", "Direction", "Options", "Decision"];
+  return labels
+    .map((label, index) => {
+      const threshold = Math.ceil(((index + 1) / labels.length) * Math.max(totalScenes, 1));
+      const active = state.sceneIndex + 1 >= threshold;
+      return `<div class="hybrid-chip ${active ? "hybrid-chip-active" : ""}">${label}</div>`;
+    })
+    .join("");
+};
+
 const render = () => {
   clampIndex();
 
@@ -152,62 +167,79 @@ const render = () => {
   const scene = activeScene();
   const hotspot = activeHotspot();
   const totalScenes = state.project.scenes.length;
-  const totalHotspots = scene && scene.hotspots ? scene.hotspots.length : 0;
+  const totalHotspots = detailCount(scene);
+
+  const notesMarkup = totalHotspots
+    ? scene.hotspots
+        .map((item, index) => {
+          const isActive = index === state.hotspotIndex;
+          return `
+            <div class="hybrid-note reveal ${isActive ? "hybrid-note-active" : ""}" data-note-index="${index}">
+              <strong>${index + 1} · ${escapeHtml(item.title)}</strong>
+              <p>${toText(item.note)}</p>
+            </div>
+          `;
+        })
+        .join("")
+    : '<div class="hybrid-note reveal"><strong>No callouts yet</strong><p>Add hotspots from the editor to guide client attention.</p></div>';
 
   app.innerHTML = `
-    <div class="viewer-header">
-      <div>
-        <p class="eyebrow">Design Review Flow</p>
-        <h1>${escapeHtml(state.project.title)}</h1>
-        <p class="lede">${toText(state.project.subtitle)}</p>
-      </div>
-      <div class="actions">
-        <a class="btn" href="index.html">Home</a>
-        <a class="btn" href="editor.html">Edit</a>
-        <button class="btn" id="toggleFlow">Flow ${state.flowMode ? "On" : "Off"}</button>
-        <button class="btn primary" id="toggleAuto">Autoplay ${state.autoPlay ? "On" : "Off"}</button>
-      </div>
-    </div>
+    <div class="hybrid-viewer">
+      <header class="hybrid-topbar reveal">
+        <div class="hybrid-brand">Studio Forum · Client Review</div>
+        <div class="hybrid-status">Scene ${state.sceneIndex + 1}/${totalScenes}${hotspot ? ` · Detail ${state.hotspotIndex + 1}/${totalHotspots}` : ""}</div>
+      </header>
 
-    <section class="viewer-grid">
-      <article class="viewer-card">
-        <p class="flow-label">Scene ${state.sceneIndex + 1} of ${totalScenes}</p>
-        <h2>${escapeHtml(scene ? scene.title : "Untitled scene")}</h2>
-        <p class="lede">${toText(scene ? scene.narrative : "")}</p>
+      <section class="hybrid-hero reveal">
+        <h1 class="hybrid-title">${escapeHtml(state.project.title)}</h1>
+        <p class="hybrid-subtitle">${toText(scene ? scene.title : "")}${scene && scene.narrative ? `<br />${toText(scene.narrative)}` : ""}</p>
+      </section>
 
-        <div class="scene-image-wrap" id="sceneWrap">
-          ${scene && scene.imageDataUrl ? `<img id="sceneImage" src="${scene.imageDataUrl}" alt="${escapeHtml(scene.title || "Scene")}" />` : '<p class="empty-stage">No image for this scene.</p>'}
-          <div id="tooltip" class="tooltip hidden"></div>
+      <article class="hybrid-frame reveal" id="sceneWrap">
+        <div class="hybrid-beam"></div>
+        <div class="hybrid-image-wrap">
+          ${scene && scene.imageDataUrl ? `<img id="sceneImage" src="${scene.imageDataUrl}" alt="${escapeHtml(scene.title || "Scene")}" />` : '<div class="hybrid-placeholder">No scene image yet.</div>'}
         </div>
+        <div class="hybrid-vignette"></div>
+        <div id="tooltip" class="tooltip hidden"></div>
 
-        <div class="flow-section">
-          <p class="flow-label">Decision rationale</p>
-          <p class="lede">${toText(scene ? scene.rationale : "")}</p>
+        <aside class="hybrid-note-panel" id="notePanel">${notesMarkup}</aside>
+
+        <div class="hybrid-dock reveal">
+          <span>${hotspot ? escapeHtml(hotspot.title) : "No detail selected"}</span>
+          <div class="hybrid-progress">${buildProgressMarkup()}</div>
         </div>
       </article>
 
-      <aside class="flow-panel">
-        <p class="flow-label">Scene controls</p>
-        <div class="step-actions">
-          <button class="btn" id="prevScene">Previous scene</button>
-          <button class="btn" id="nextScene">Next scene</button>
-        </div>
+      <div class="hybrid-controls reveal">
+        <button class="btn" id="prevScene">Previous Scene</button>
+        <button class="btn" id="nextScene">Next Scene</button>
+        <button class="btn" id="prevHotspot">Previous Detail</button>
+        <button class="btn" id="nextHotspot">Next Detail</button>
+        <button class="btn" id="toggleFlow">Flow ${state.flowMode ? "On" : "Off"}</button>
+        <button class="btn primary" id="toggleAuto">Autoplay ${state.autoPlay ? "On" : "Off"}</button>
+      </div>
 
-        <div class="flow-section">
-          <p class="flow-label">Detail flow (${totalHotspots})</p>
-          <div class="step-actions">
-            <button class="btn" id="prevHotspot">Previous detail</button>
-            <button class="btn" id="nextHotspot">Next detail</button>
-          </div>
-          <p class="lede compact">${hotspot ? `Detail ${state.hotspotIndex + 1}: ${escapeHtml(hotspot.title)}` : "No hotspots in this scene."}</p>
-          <div class="note-card">${hotspot ? toText(hotspot.note) : "Add hotspot notes in the editor."}</div>
+      <section class="hybrid-sections">
+        <div class="hybrid-section reveal">
+          <h3>Decision Rationale</h3>
+          <p>${toText(scene ? scene.rationale : "") || "No rationale text for this scene yet."}</p>
         </div>
-      </aside>
-    </section>
+        <div class="hybrid-section reveal">
+          <h3>Audience Clarity</h3>
+          <p>Subtle motion and callouts reveal one detail at a time so stakeholders can review asynchronously without confusion.</p>
+        </div>
+        <div class="hybrid-section reveal">
+          <h3>Presentation Flow</h3>
+          <p>Keyboard and button controls keep the review sequence intentional while preserving a polished client-facing destination.</p>
+        </div>
+      </section>
+    </div>
   `;
 
   wireViewEvents();
   drawHotspots();
+  wireScrollReveal();
 };
 
 const drawHotspots = () => {
@@ -217,16 +249,16 @@ const drawHotspots = () => {
 
   const tooltip = document.getElementById("tooltip");
 
-  scene.hotspots.forEach((hotspot, index) => {
+  scene.hotspots.forEach((item, index) => {
     const button = document.createElement("button");
     button.type = "button";
     const isActive = index === state.hotspotIndex;
     const dimmed = state.flowMode && !isActive;
-    button.className = `hotspot ${isActive ? "active" : ""} ${dimmed ? "dimmed" : ""}`;
-    button.style.left = `${hotspot.x}%`;
-    button.style.top = `${hotspot.y}%`;
+    button.className = `hybrid-hotspot ${isActive ? "hybrid-hotspot-active" : ""} ${dimmed ? "hybrid-hotspot-dim" : ""}`;
+    button.style.left = `${item.x}%`;
+    button.style.top = `${item.y}%`;
     button.textContent = String(index + 1);
-    button.setAttribute("aria-label", hotspot.title);
+    button.setAttribute("aria-label", item.title);
 
     button.onclick = () => {
       state.hotspotIndex = index;
@@ -235,9 +267,9 @@ const drawHotspots = () => {
 
     button.onmouseenter = () => {
       tooltip.classList.remove("hidden");
-      tooltip.textContent = hotspot.title;
-      tooltip.style.left = `${Math.min(84, hotspot.x + 2)}%`;
-      tooltip.style.top = `${Math.max(5, hotspot.y - 6)}%`;
+      tooltip.textContent = item.title;
+      tooltip.style.left = `${Math.min(84, item.x + 2)}%`;
+      tooltip.style.top = `${Math.max(5, item.y - 6)}%`;
     };
 
     button.onmouseleave = () => {
@@ -249,7 +281,6 @@ const drawHotspots = () => {
 
   const image = document.getElementById("sceneImage");
   if (image) {
-    image.style.cursor = "zoom-in";
     image.onclick = () => openLightbox(scene.imageDataUrl, scene.title || "Design");
   }
 };
@@ -317,6 +348,27 @@ const startAuto = () => {
   state.timerId = setInterval(() => {
     nextHotspot();
   }, 5500);
+};
+
+const wireScrollReveal = () => {
+  if (state.observer) {
+    state.observer.disconnect();
+  }
+
+  const reveals = document.querySelectorAll(".reveal");
+  state.observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal-visible");
+          state.observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.18, rootMargin: "0px 0px -30px 0px" }
+  );
+
+  reveals.forEach((node) => state.observer.observe(node));
 };
 
 const wireViewEvents = () => {

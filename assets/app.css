@@ -426,3 +426,324 @@ h1 {
   display: grid;
   place-items: center;
 }
+
+.hybrid-viewer-body {
+  background:
+    radial-gradient(900px 620px at 50% 0%, rgba(43, 69, 118, 0.32), transparent 66%),
+    radial-gradient(1000px 700px at 100% -12%, rgba(18, 64, 74, 0.28), transparent 66%),
+    #000;
+}
+
+.hybrid-viewer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 26px 24px 120px;
+}
+
+.hybrid-topbar {
+  position: sticky;
+  top: 10px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  background: rgba(6, 8, 13, 0.78);
+  backdrop-filter: blur(10px);
+  padding: 10px 14px;
+  margin-bottom: 44px;
+}
+
+.hybrid-brand {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #efbf64;
+}
+
+.hybrid-status {
+  font-size: 12px;
+  color: #9ea9bb;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.hybrid-hero {
+  text-align: center;
+  margin: 14vh auto 7vh;
+}
+
+.hybrid-title {
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 5.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+
+.hybrid-subtitle {
+  margin: 14px auto 0;
+  max-width: 62ch;
+  color: #9ea9bb;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.hybrid-frame {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 22px;
+  background: linear-gradient(160deg, #0f1726 0%, #141d2b 58%, #101924 100%);
+  min-height: 720px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.58);
+}
+
+.hybrid-image-wrap {
+  position: absolute;
+  inset: 8% 9% 12%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(132deg, #3b5884, #2d435f 58%, #355c5f);
+}
+
+.hybrid-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  cursor: zoom-in;
+}
+
+.hybrid-image-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.hybrid-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #9ea9bb;
+  padding: 20px;
+  text-align: center;
+}
+
+.hybrid-beam {
+  position: absolute;
+  inset: -24% -18% auto;
+  height: 460px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(132, 186, 255, 0.24), transparent 72%);
+  pointer-events: none;
+}
+
+.hybrid-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 46%, transparent 34%, rgba(0, 0, 0, 0.58));
+  pointer-events: none;
+}
+
+.hybrid-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(132, 186, 255, 0.24);
+  box-shadow: 0 0 0 9px rgba(132, 186, 255, 0.08);
+  animation: hybrid-pulse 2.3s ease-in-out infinite;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.hybrid-hotspot-active {
+  background: rgba(239, 191, 100, 0.35);
+  box-shadow: 0 0 0 10px rgba(239, 191, 100, 0.1);
+}
+
+.hybrid-hotspot-dim {
+  opacity: 0.35;
+}
+
+.hybrid-note-panel {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: min(38%, 360px);
+  display: grid;
+  gap: 8px;
+  z-index: 4;
+}
+
+.hybrid-note {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 11px;
+  background: rgba(0, 0, 0, 0.52);
+}
+
+.hybrid-note strong {
+  display: block;
+  font-size: 13px;
+  color: #70d3d8;
+  margin-bottom: 4px;
+}
+
+.hybrid-note p {
+  margin: 0;
+  font-size: 13px;
+  color: #9ea9bb;
+  line-height: 1.43;
+}
+
+.hybrid-note-active {
+  border-color: rgba(239, 191, 100, 0.62);
+  background: linear-gradient(180deg, rgba(239, 191, 100, 0.14), rgba(239, 191, 100, 0.03));
+}
+
+.hybrid-dock {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.48);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  z-index: 4;
+}
+
+.hybrid-dock span {
+  font-size: 12px;
+  color: #9ea9bb;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hybrid-progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 48%;
+}
+
+.hybrid-chip {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 7px;
+  text-align: center;
+  font-size: 11px;
+  color: #9ea9bb;
+}
+
+.hybrid-chip-active {
+  border-color: rgba(239, 191, 100, 0.63);
+  color: #f4f7ff;
+}
+
+.hybrid-controls {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hybrid-controls .btn {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.hybrid-sections {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.hybrid-section {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.hybrid-section h3 {
+  margin: 0 0 7px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.hybrid-section p {
+  margin: 0;
+  color: #9ea9bb;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes hybrid-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 0 9px rgba(132, 186, 255, 0.08);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.09);
+    box-shadow: 0 0 0 13px rgba(132, 186, 255, 0.05);
+  }
+}
+
+@media (max-width: 1050px) {
+  .hybrid-frame {
+    min-height: 680px;
+  }
+
+  .hybrid-note-panel {
+    position: static;
+    width: auto;
+    margin: 14px;
+  }
+
+  .hybrid-dock {
+    position: static;
+    margin: 14px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hybrid-progress {
+    width: 100%;
+  }
+
+  .hybrid-sections {
+    grid-template-columns: 1fr;
+  }
+}
